@@ -1,0 +1,147 @@
+---
+# tasks file for bot-service
+
+
+# validation
+
+#- name: assert all vars are set
+  #assert: { that: "{{ item }} != '' " }
+  #with_items:
+  #- temp_folder
+  #- clear_temp_folder
+  #- installation_folder
+  #- clear_before_install
+  #- app_version
+  #- installer_file_name
+  #- jar_file_name
+  #- ansible_user_id
+  #- s3_download_url
+
+
+- name: make sure bot folder exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+  with_items:
+    - "{{ installation_folder }}/model-worker/build/libs"
+    - "{{ installation_folder }}/model-service"
+  become: yes
+
+- name: make sure temp folder
+  file:
+    path: "{{ temp_folder }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+  become: yes
+
+- name: make sure java is installed on the machine
+  command: "{{ java_bin }} -version"
+  register: java_test
+  become: yes
+  ignore_errors: yes
+
+- name: fail if java is not found
+  fail:
+    msg: "java must be accesible in path {{ java_bin }}"
+  when: java_test.rc != 0
+
+# remove old jar war from folder
+
+#- name: remove war from directory
+#  shell: "rm -rf model-service-*.war"
+#  args:
+#    chdir: "{{ installation_folder }}/model-service"
+
+#- name: remove jar from directory
+##  shell: "rm -rf model-worker-*.jar"
+#  args:
+#    chdir: "{{ installation_folder }}/model-worker/build/libs"
+
+
+# download the files
+
+- name: download 'war' & 'jar' from custom url
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ temp_folder }}"
+    timeout: "{{ download_timeout | default(60) }}"
+  with_items:
+    - "{{ custom_download_url }}"
+    - "{{ custom_jar_download_url }}"
+
+- name: copy war file to installation folder
+  copy:
+    src: "{{ temp_folder }}/{{ installer_file_name }}"
+    dest: "{{ installation_folder }}/model-service/{{ installer_file_name }}"
+    remote_src: yes
+  become: yes
+
+- name: copy jar file to installation folder
+  copy:
+    src: "{{ temp_folder }}/{{ jar_file_name }}"
+    dest: "{{ installation_folder }}/model-worker/build/libs/{{ jar_file_name }}"
+    remote_src: yes
+  become: yes
+
+# - name: download 'war' from custom url
+#   get_url:
+#     url: "{{ custom_download_url }}"
+#     dest: "{{ installation_folder }}/model-service/{{ installer_file_name }}"
+#     timeout: "{{ download_timeout | default(60) }}"
+
+# - name: download 'jar' from custom url
+#   get_url:
+#     url: "{{ custom_jar_download_url }}"
+#     dest: "{{ installation_folder }}/model-worker/build/libs/{{ jar_file_name }}"
+#     timeout: "{{ download_timeout | default(60) }}"
+
+# stop old service
+
+- name: stop the old service
+  systemd:
+    name: "{{ service_name }}"
+    state: stopped
+  ignore_errors: yes
+  become: yes
+ 
+# copy service & start.sh
+
+- name: copy service file
+  template:
+    src: systemd.service.j2
+    dest: "{{ service_file_path }}"
+  become: yes
+
+- name: copy start script to installation folder
+  template:
+    src: start.sh.j2
+    dest: "{{ installation_folder }}/model-service/start.sh"
+    mode: 0777
+    owner: "{{ ansible_user_id }}"
+  become: yes
+  
+# start the service
+
+- name: start the service
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: "{{ service_name }}"
+    enabled: yes
+  become: yes
+
+  
+
+- name: print finish
+  debug:
+    msg: "finish"
+  #notify:
+  #  - print finish handler
+
+- name: wait for service to start
+  health_check:
+    url: "http://localhost:{{ health_check_port}}{{ health_check_uri | default('/external/projects') }}"
+    expected_status: "{{ health_check_status | default('200') }}"
+    max_retries: "{{ health_check_max_retries | default('60') }}"
+
