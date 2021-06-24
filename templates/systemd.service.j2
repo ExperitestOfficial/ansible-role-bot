@@ -1,0 +1,22 @@
+# Systemd unit file for bot service
+[Unit]
+Description=bot
+
+[Service]
+WorkingDirectory={{ installation_folder }}/model-service
+ExecStart={{ installation_folder }}/model-service/start.sh
+
+#User=qa
+#Type=forking
+#TimeoutStopSec=10
+#Restart=on-failure
+#RestartSec=5
+
+# ExecStop=/bin/pkill -15 java
+# StandardOutput=syslog
+# StandardError=syslog
+# User={{ service_username | default(ansible_user_id) }}
+
+
+[Install]
+WantedBy=multi-user.target

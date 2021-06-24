@@ -1,0 +1,5 @@
+---
+- hosts: bot-uis
+
+  roles:
+    - role: bot
