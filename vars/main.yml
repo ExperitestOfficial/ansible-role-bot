@@ -1,6 +1,6 @@
 ---
 
-__installation_root_folder: "/opt/Experitest"
+installation_root_folder: "/opt/Experitest"
 installation_folder: "{{ installation_root_folder }}/{{ app_name }}-{{ app_version }}"
 # installation_folder: "{{ ansible_user_dir }}/bot"
 

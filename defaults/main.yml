@@ -4,7 +4,7 @@ app_name: bot
 health_check_port: "8083"
 health_check_uri: "/external/projects"
 
-__java_version: 8u292-b10
+java_version: 8u292-b10
 clear_temp_folder: False
 
 custom_download_url: ""
