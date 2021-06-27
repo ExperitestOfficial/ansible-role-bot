@@ -13,7 +13,7 @@ service_file_path: "/etc/systemd/system/{{ service_name }}"
 war_file_name: "model-service-{{ app_version }}.war" # check the 1.0. before the app_version
 jar_file_name: "model-worker-{{ app_version }}.jar" # check the 1.0. before the app_version
 
-relative_path: "app-signer/linux"
+relative_path: "bot/linux"
 
 launcher_file_name: "start.sh"
 
