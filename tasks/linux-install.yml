@@ -4,18 +4,22 @@
 
 # validation
 
-#- name: assert all vars are set
-  #assert: { that: "{{ item }} != '' " }
-  #with_items:
-  #- temp_folder
-  #- clear_temp_folder
-  #- installation_folder
-  #- clear_before_install
-  #- app_version
-  #- war_file_name
-  #- jar_file_name
-  #- ansible_user_id
-  #- s3_download_url
+# - name: assert all vars are set
+#   assert: { that: "{{ item }} != '' " }
+#   with_items:
+#   - temp_folder
+#   - app_name
+#   - service_name
+#   - main_class
+#   - installation_folder
+#   - clear_before_install
+#   - server_port
+#   - jmx_port
+#   - service_file_path
+#   - war_file_name
+#   - jar_file_name
+#   - ansible_user_id
+#   - s3_download_url
 
 
 - name: make sure bot folder exists
@@ -28,12 +32,16 @@
     - "{{ installation_folder }}/model-service"
   become: yes
 
+# set temp folder
+
 - name: make sure temp folder
   file:
     path: "{{ temp_folder }}"
     state: directory
     owner: "{{ ansible_user_id }}"
   become: yes
+  
+# required java dependency
 
 - name: make sure java is installed on the machine
   command: "{{ java_bin }} -version"
@@ -46,20 +54,17 @@
     msg: "java must be accesible in path {{ java_bin }}"
   when: java_test.rc != 0
 
-# remove old jar war from folder
-
-#- name: remove war from directory
-#  shell: "rm -rf model-service-*.war"
-#  args:
-#    chdir: "{{ installation_folder }}/model-service"
-
-#- name: remove jar from directory
-##  shell: "rm -rf model-worker-*.jar"
-#  args:
-#    chdir: "{{ installation_folder }}/model-worker/build/libs"
-
-
 # download the files
+
+- name: download 'war' & 'jar' from s3 url
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ temp_folder }}"
+    timeout: "{{ download_timeout | default(60) }}"
+  with_items:
+    - "{{ s3_download_url_war }}"
+    - "{{ s3_download_url_jar }}"
+  when: custom_download_url == ""
 
 - name: download 'war' & 'jar' from custom url
   get_url:
@@ -69,6 +74,7 @@
   with_items:
     - "{{ custom_download_url }}"
     - "{{ custom_jar_download_url }}"
+  when: custom_download_url != ""
 
 - name: copy war file to installation folder
   copy:
