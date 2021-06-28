@@ -18,4 +18,5 @@ To run this role - need to provide the following parameters of Experitet Cloud
 | custom_download_url | custom url to download the war file from | string |  | no |
 | custom_jar_download_url | custom url to download the jar file from | string |  | no |
 | app_version | application version to install | string |  | no |
+| server_port | port number for the server | string | 8083 | no |
 
