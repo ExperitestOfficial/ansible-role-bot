@@ -1,12 +1,19 @@
 ---
+required_modifiable_fields:
+  - server_port
+  - installation_root_folder
+  - java_version
+  - custom_download_username
+  - custom_download_password
+
 app_name: bot
 
-server_port: "8083"
+__server_port: "8083"
 
 health_check_port: "{{ server_port }}"
 health_check_uri: "/external/projects"
 
-java_version: 8u292-b10
+__java_version: 8u292-b10
 clear_temp_folder: False
 
 custom_download_url: ""
