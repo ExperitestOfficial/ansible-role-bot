@@ -1,6 +1,4 @@
----
-# handlers file for bot-service
 
-- name: print start handler
-  debug:
-    msg: "start the service handler"
+- name: start the service
+  include_tasks: "handlers/{{ ansible_os_family | os_family_to_os_type }}-start-service.yml"
+  when: start_after_install | default(false) | bool
