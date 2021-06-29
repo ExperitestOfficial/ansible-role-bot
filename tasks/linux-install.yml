@@ -4,22 +4,19 @@
 
 # validation
 
-# - name: assert all vars are set
-#   assert: { that: "{{ item }} != '' " }
-#   with_items:
-#   - temp_folder
-#   - app_name
-#   - service_name
-#   - main_class
-#   - installation_folder
-#   - clear_before_install
-#   - server_port
-#   - jmx_port
-#   - service_file_path
-#   - war_file_name
-#   - jar_file_name
-#   - ansible_user_id
-#   - s3_download_url
+- name: assert all vars are set
+  assert: { that: "{{ item }} != '' " }
+  with_items:
+  - temp_folder
+  - app_name
+  - service_name
+  - installation_folder
+  - server_port
+  - service_file_path
+  - war_file_name
+  - jar_file_name
+  - ansible_user_id
+  - launcher_file_name
 
 
 - name: make sure bot folder exists
@@ -124,7 +121,7 @@
 - name: copy start script to installation folder
   template:
     src: start.sh.j2
-    dest: "{{ installation_folder }}/model-service/start.sh"
+    dest: "{{ installation_folder }}/model-service/{{ launcher_file_name }}"
     mode: 0777
     owner: "{{ ansible_user_id }}"
   become: yes

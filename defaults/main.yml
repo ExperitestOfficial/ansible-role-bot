@@ -1,5 +1,6 @@
 ---
 required_modifiable_fields:
+  - app_version
   - server_port
   - installation_root_folder
   - java_version
@@ -7,6 +8,7 @@ required_modifiable_fields:
   - custom_download_password
 
 app_name: bot
+__app_version: 1.0.0
 
 __server_port: "8083"
 
