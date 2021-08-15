@@ -3,6 +3,9 @@ required_modifiable_fields:
   - app_version
   - server_port
   - installation_root_folder
+  - db_connection_string
+  - db_username
+  - db_password
   - java_version
   - custom_download_username
   - custom_download_password
@@ -24,9 +27,28 @@ custom_download_url: ""
 
 extra_java_options: []
 
+__db_connection_string: "jdbc:postgresql://localhost:5432/cloudserver"
+__db_username: postgres
+__db_password: ""
+
+base_application_properties:
+  - "spring.datasource.url": "{{ db_connection_string }}"
+  - "spring.datasource.username": "{{ db_username }}"
+  - "spring.datasource.password": "{{ db_password }}"   
+  - "spring.datasource.driver-class-name": "org.postgresql.Driver"
+
+extra_application_properties: {}
+
+application_properties: "{{ base_application_properties | combine(extra_application_properties) }}"
+
+
+extra_logback_properties: {}
+
+logback_properties: "{{ extra_logback_properties }}"
+
+
 cdn_name: "devops-artifacts.experitest.com"
 
-s3_download_url_war: "https://{{ cdn_name }}/{{ relative_path }}/{{ war_file_name }}"
-s3_download_url_jar: "https://{{ cdn_name }}/{{ relative_path }}/{{ jar_file_name }}"
+s3_download_url: "https://{{ cdn_name }}/{{ relative_path }}/{{ installer_file_name }}"
 
 java_download_url: "https://{{ cdn_name }}/{{ java_relative_path }}/{{ java_download_filename }}"

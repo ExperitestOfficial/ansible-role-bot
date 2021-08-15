@@ -4,4 +4,4 @@ JAVA_BIN={{ java_bin }}
 $JAVA_BIN \
 -Dserver.port={{ server_port }} \
 {{ extra_java_options | join(' ') }} \
--jar {{ war_file_name }} >> out.log
+-jar lib/model-service-{{ app_version }}.jar >> out.log

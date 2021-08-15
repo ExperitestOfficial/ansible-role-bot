@@ -13,8 +13,6 @@
   - installation_folder
   - server_port
   - service_file_path
-  - war_file_name
-  - jar_file_name
   - ansible_user_id
   - launcher_file_name
 

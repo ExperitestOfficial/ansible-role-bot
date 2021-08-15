@@ -5,12 +5,13 @@ installation_folder: "{{ installation_root_folder }}/{{ app_name }}-{{ app_versi
 
 temp_folder: /var/tmp/Experitest
 
+logs_folder: "/var/opt/Experitest/{{ app_name }}/logs"
+
 service_name: "{{ app_name }}.service"
 
 service_file_path: "/etc/systemd/system/{{ service_name }}"
 
-war_file_name: "model-service-{{ app_version }}.war" # check the 1.0. before the app_version
-jar_file_name: "model-worker-{{ app_version }}.jar" # check the 1.0. before the app_version
+installer_file_name: "bot-{{ app_version }}.zip"
 
 relative_path: "bot/linux"
 
