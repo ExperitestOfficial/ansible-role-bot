@@ -27,7 +27,7 @@ custom_download_url: ""
 
 extra_java_options: []
 
-__db_connection_string: "jdbc:postgresql://localhost:5432/botpostgres"
+__db_connection_string: "jdbc:postgresql://localhost:5432/postgres"
 __db_username: postgres
 __db_password: ""
 
