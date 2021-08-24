@@ -104,7 +104,7 @@
 - name: copy start script to installation folder
   template:
     src: start.sh.j2
-    dest: "{{ installation_folder }}/model-service/{{ launcher_file_name }}"
+    dest: "{{ installation_folder }}/{{ launcher_file_name }}"
     mode: 0777
     owner: "{{ ansible_user_id }}"
   become: yes
