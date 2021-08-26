@@ -25,7 +25,7 @@ To run this role - need to provide the following parameters of Experitet Cloud
 | db_password | password for db connection | string |  | yes |
 | installation_root_folder | the root folder in which the application will be installed under reporter-{version} folder 
 | app_version | application version to install | string | 1.0.406  | no |
-| server_port | port number for the server | string | 8083 | no |
+| server_port | port number for the server | string | 8099 | no |
 | installation_root_folder | the root folder in which the application will be installed under bot-{version} folder | string | for linux: /opt/Experitest | no |
 | java_version | java jre version to install | string | 8u292-b10 | no |
 | clear_temp_folder | remove temp folder after installation | boolean | False | no |
