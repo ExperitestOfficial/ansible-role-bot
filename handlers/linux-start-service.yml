@@ -19,9 +19,12 @@
     return_content: yes
   register: api_response
 
+- set_fact:
+    api_json_resp: "{{api_response.content | from_json }}"
+
 - name: print installed version
   debug:
-    msg: " Installed version: {{ api_response.content.build.version }}"
+    msg: " Installed version: {{ api_json_resp.build.version }}"
 
 - name: print finish
   debug:
