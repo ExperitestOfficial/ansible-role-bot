@@ -4,21 +4,21 @@
   include_tasks: tasks/variables.yml
 
 - name: install
-  include_tasks: "tasks/{{ ansible_os_family | os_family_to_os_type }}-install.yml"
+  include_tasks: "tasks/linux-install.yml"
   when: state|default('present') == 'present'
 
 - name: clear temp folder
-  include_tasks: "tasks/{{ ansible_os_family | os_family_to_os_type }}-clear-temp.yml"
+  include_tasks: "tasks/linux-clear-temp.yml"
   when: clear_temp_folder | default('no') | bool
   
 - name: track versions
-  include_tasks: "tasks/{{ ansible_os_family | os_family_to_os_type }}-track-versions.yml"
+  include_tasks: "tasks/linux-track-versions.yml"
   when: state|default('present') == 'present'
 
 - name: remove archived versions
-  include_tasks: "tasks/{{ ansible_os_family | os_family_to_os_type }}-remove-archived.yml"
+  include_tasks: "tasks/linux-remove-archived.yml"
   when: state|default('present') == 'present'
 
 - name: uninstall
-  include_tasks: "tasks/{{ ansible_os_family | os_family_to_os_type }}-uninstall.yml"
+  include_tasks: "tasks/linux-uninstall.yml"
   when: state|default('present') == 'absent'
