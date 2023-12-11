@@ -16,16 +16,6 @@
   - ansible_user_id
   - launcher_file_name
 
-
-# required dependencies
-
-- name: make sure unzip is installed
-  yum:
-    name: unzip
-    state: present
-    lock_timeout: 180
-  become: yes
-
 # set temp folder
 
 - name: make sure temp folder
