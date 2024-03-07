@@ -14,10 +14,6 @@
 - name: install
   include_tasks: "tasks/linux-install.yml"
   when: state|default('present') == 'present'
-
-- name: clear temp folder
-  include_tasks: "tasks/linux-clear-temp.yml"
-  when: clear_temp_folder | default('no') | bool
   
 - name: track versions
   include_tasks: "tasks/linux-track-versions.yml"
@@ -26,6 +22,10 @@
 - name: remove archived versions
   include_tasks: "tasks/linux-remove-archived.yml"
   when: state|default('present') == 'present'
+
+- name: clear temp folder
+  include_tasks: "tasks/linux-clear-temp.yml"
+  when: clear_temp_folder | default('no') | bool
 
 - name: uninstall
   include_tasks: "tasks/linux-uninstall.yml"
